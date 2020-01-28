@@ -1,0 +1,79 @@
+ % -*-latex-*-
+% Document name: newfeatures.tex
+% Creator: Rob MacLeod [macleod@vissgi.cvrti.utah.edu]
+% Last update: September 2, 2000 by Rob MacLeod
+%    - created
+% Last update: Mon Jul 23 13:28:30 2001 by Rob MacLeod
+%    - release 5.2
+% Last update: Fri Mar 1 20:00:00 2002 by Bryan Worthen
+%    - release 5.3
+% Last update: Fri Jan 24 20:00:00 2003 by Bryan Worthen
+%    - release 5.4
+% Last update: Tue Mar 30 20:00:00 2004 by Bryan Worthen
+%    - release 6.0
+% Last update: Wed Jun 30 13:28:30 2004 by Bryan Worthen
+%    - release 6.1
+% Last update: Tue Oct 19 13:28:30 2004 by Bryan Worthen
+%    - release 6.2
+% Last update: Wed May 11 13:28:30 2005 by Bryan Worthen
+%    - release 6.3
+% Last update: Thu May 19 12:35:15 2005 by Rob Macleod
+%    - for version 6.3
+% Last update: Web Jan 31 12:35:15 2005 by Bryan Worthen
+%    - for version 6.4
+% Last update: Fri Feb 16 08:16:29 2007 by Rob Macleod
+%    - for version 6.5
+% Last update: Fri Jul 22 16 22:15:11 20016 by Bryan Worthen
+%    - release 7.2.2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{What's New?}
+\label{sec:new-features} 
+
+In this section, we highlight the latest additions to \map{} in the
+(vain?) hope that people will read at least this much of the manual
+and be able to quickly make use of the latest and greatest that the program
+offers.
+
+\subsection{Version~\version{}}
+
+This is the seventh version of the ``new'' \map{}, the latest with a Qt-based GUI.
+
+Some of the specific additions that you should notice over previous versions
+include:
+%
+\begin{description}
+  \item [GUI improvements: ] \map{} 7.0 was rewritten in Qt.
+    This was largely to help cross-platform issues that were
+    arising and the deprecation of some features being relied
+    on.
+    Most main windows are preserved, but some GUI dialogs have
+    received a face lift.
+  \item [old format deprecation: ] \map{} has deprecated the old .geom, .tsdf, .data, and .tsdfc data files, in favor of matlab.
+  \item [0-based or 1-based indiced: ] .fac or .mat geometries can refer to points in a 0-based or 1-based manner.
+  \item [Time-dependent geometry: ] \map{} 7.2.2 has introduced time-dependent geometry.  See Section~\ref{sec:animated-mesh}
+  \item [64-bit Windows support: ] \map{} 7.2.4 has introduced 64-bit binaries for Windows, enabling the use of large datasets.
+  \item [Bug fixes: ] not that the previous version had any bugs, but we
+    found a few(!) more things to fix.
+\end{description}
+
+\subsection{In the works (``vapourware'')}
+\label{sec:vapourware}
+
+A small sampler of things that are in the works:
+
+\begin{itemize}
+  \item Saving the frames into actual movies.
+  \item Dynamic menus that indicate the current parameter selections
+    (a bit more in progress).
+  \item New display modes for the display of vectors.
+  \item Fixing the bugs listed on the bugs page (see
+    Section~\ref{sec:bugs}).
+\end{itemize}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "manual"
+%%% End: 

@@ -1,0 +1,32 @@
+Current edition of User's Manual:
+https://github.com/SCIInstitute/map3d/releases/download/v7.2.5/manual.pdf
+
+Windows Installers and Mac DMGs are available with each release.  
+
+Building on windows
+Prereq: Install MS Visual C++ Express 2013
+Prereq: Install Qt 5.4 (that was built with C++ 2013, OpenGL, 64bit)
+Prereq: Install NSIS
+* Open a MS Visual Studio command prompt
+* set QTDIR=C:\Qt\<version>
+* set PATH=%QTDIR%\path;C:\Program Files (x86)\NSIS;%PATH%;
+* ( example in win64-start-map3d-build-env.bat )
+* Run buildWin32Installer.bat
+* executable is in client/release/map3d.exe and creates map3d installer in working directory
+
+Building on mac
+Prereq: Install xcode
+Prereq: Install Qt
+* ./buildOsxApp.sh
+* Creates map3d.dmg and executable is in client/map3d.app/Contents/
+
+Building on linux
+Prereq: Install Qt (5.4 or greater)
+* export QTDIR=<path-to-qt>
+* export PATH=$QTDIR/bin:$PATH
+* Untar the map3d source tarball
+* cd into the map3d source
+* Run <path-to-Qt>/bin/qmake
+* make
+* map3d will (on Linux) be in client/map3d
+

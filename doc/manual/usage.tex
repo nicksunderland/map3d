@@ -1,0 +1,730 @@
+% -*-latex-*-
+% Document name: usage.tex
+% Creator: Rob MacLeod [macleod@vissgi.cvrti.utah.edu]
+% Last update: September 2, 2000 by Rob MacLeod
+%    - created
+% Last update: Sun Sep 24 16:41:08 2000 by Rob MacLeod
+%    - Version 5.0Beta release edition
+% Last update: Mon Jul 23 13:28:30 2001 by Rob MacLeod
+%    - release 5.2
+% Last update: Fri Mar 1 20:00:00 2002 by Bryan Worthen
+%    - release 5.3
+% Last update: Fri Jun 21 13:33:12 2002 by Rob Macleod
+%    - update still for 5.3
+% Last update: Fri Jan 24 20:00:00 2003 by Bryan Worthen
+%    - release 5.4
+% Last update: Tue Mar 30 20:00:00 2003 by Bryan Worthen
+%    - release 6.0
+% Last update: Wed Jun 30 13:28:30 2004 by Bryan Worthen
+%    - release 6.1
+% Last update: Tue Oct 19 13:28:30 2004 by Bryan Worthen
+%    - release 6.2
+% Last update: Mon May 16 13:28:30 2005 by Bryan Worthen
+%    - release 6.3
+% Last update: Tue Jan 30 13:28:30 2007 by Bryan Worthen
+%    - release 6.4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Usage} 
+\label{sec:usage}
+
+This version of \map{} provides two ways to load files.  The first is 
+via the command line, which is described in this section.  The second is
+via the files window (see Section~\ref{sec:fileswindow}).  You can also
+launch \map{} with some command line options and then modify the associated
+settings using interactive menus and the files window.  
+
+This is a subset of \map{}'s usage:
+\begin{verbatim} 
+  map3d  -b -nw -nv
+         -f geomfilename 
+           -w
+           -as xmin xmax ymin ymax 
+           -al xmin xmax ymin ymax
+           -at xmin xmax ymin ymax 
+           -t time-signal-number 
+           -c mesh colour
+           -p scalar data (potentials) filename 
+             -s num1 num2 
+             -i increment 
+             -ph maxpotval 
+             -pl minpotval 
+             -cs contour-spacing 
+             -ps scaling_value 
+             -ch channels-filename 
+             -sl surfnum
+             -ff fidfile
+           -lm landmarks-filename
+           -ll leadlinks-filename
+           -lh 
+\end{verbatim}
+
+\subsection{Typical usage examples}
+\label{sec:usage-examples} 
+
+\noindent
+Here are some typical examples of using \map{}:
+%
+\begin{itemize}
+  \item Display the contents of a geometry file:
+  \begin{verbatim}
+      map3d
+      map3d -f geomfilename.pts
+      map3d -f geomfilename.fac
+      map3d -f geomfilename.mat
+
+  \end{verbatim}
+  \vspace{-.2in}
+  The first instance will run map3d and allow you to input files interactively
+  (see Section~\ref{sec:fileswindow}).
+  
+  The first form with arguments reads only the node points (.pts file
+  extension) while the second form also reads the connectivities from a
+  .fac file and displays both mesh and nodes.  The third form assumes that
+  a matlab geometry file (.mat extension) exists that contains both nodes
+  and connectivities.  We describe all these forms of geometry files in
+  Section~\ref{sec:geomfiles}.
+  
+  \item Map scalar values from a single time instant stored in a ``pot''
+  file (described in Section~\ref{sec:potfiles}):
+  \begin{verbatim}
+      map3d -f geomfilename.fac -p datafilename.pot
+  \end{verbatim}
+
+  \item When there is a mapping required between the potentials and the 
+  geometry, \eg{} when the order of values in the .pot and .pts file 
+  are not identical, we require a channels file (see 
+  Section~\ref{sec:leadfiles} for details of the channels files),
+  \begin{verbatim}
+      map3d -f geomfilename.fac -p datafilename.pot -ch thefile.channels
+  \end{verbatim}
+   
+  \item To display a \emph{time series} of scalar values on the geometry, 
+  the basic format is the same
+  \begin{verbatim}
+      map3d -f geomfilename.fac -p datafilename.mat
+  \end{verbatim}
+  \vspace{-.2in}
+  with the time series stored in a datafile described in
+  Section~\ref{sec:datafiles}.
+
+  \item Geometry can also be stored in a matlab file (in a format 
+  described in Section~\ref{sec:matlabgeom}).  The command 
+  format is essentially unchanged
+  \begin{verbatim}
+      map3d -f geomfilename.mat -p datafilename.mat
+  \end{verbatim}
+  \vspace{-.2in}
+  except that channel information is usually contained in the .geom 
+  file and thus seldom needs to be specified explicitly.
+  
+  \item A time series data matlab file (.mat) contains a sequence of 
+  potentials, as described in Section~\ref{sec:matlabdata}.
+  To select a subset of the time series for display, append the 
+  parameters \texttt{-s} and, optionally,  \texttt{-i}, for example,
+  \begin{verbatim}
+      map3d -f geomfilename.fac -p datafilename.mat -s 1 100 -i 2
+  \end{verbatim}
+  \vspace{-.2in}
+  to select time instants 1 to 100 with an increment between instants 
+  of 2 (\ie{} 1, 3, 5, 7, \ldots, 99).  
+
+  \item Another way to describe a time series is through a series of .pot
+  files that are numbered in sequence.  For example to read a sequence of
+  the files \texttt{mapdata001.pot}, \texttt{mapdata002.pot},
+  \texttt{mapdata003.pot}, \ldots{}  \texttt{mapdata009.pot}
+  \begin{verbatim}
+      map3d -f geomfilename.fac -p mapdata -s 1 9 
+  \end{verbatim}
+  
+  \item Matlab geometry files can contain more than one geometry 
+  so that we need to select a specific collection of nodes and 
+  connectivities for the display, by means of an ``@'' suffix to the 
+  geometry filename specification.  Calling 
+  \begin{verbatim}
+      map3d -f geomfilename.mat@2 -p datafilename.mat
+  \end{verbatim}
+  \vspace{-.2in}
+  will select geometry \#2 from the file \texttt{geomfilename.mat}.
+
+  \item Multiple instances of \texttt{-f} create multiple surfaces, which by
+  default all appear in the same  window.  Adding the \texttt{-nw} option
+  creates a separate window for each of the surfaces.  So a typical call
+  would look like
+  \begin{verbatim}
+      map3d -f geomfile1.fac -p thedata1 -f geomfile2.fac -p thedata2 
+  \end{verbatim}
+  However, you can include all the regular features for each of the
+  surfaces so that things can get much more complex.  For multi-surface
+  displays, it is often better to use script files (see
+  Section~\ref{sec:scripts}) below.
+
+\end{itemize}
+
+This version of \map{} provides an interactive means of 
+specifying geometry numbers from a .geom file or time instants from a 
+time series data file (see Section~\ref{sec:fileswindow}).
+
+\subsection{Global Parameters}
+\label{sec:usage-global} 
+
+\noindent
+The following general parameters affect the entire display:
+\begin{description}
+    
+  \item[{\tt -b }] = open each individual window without borders
+    placed within a master window that still has the usual borders.  To
+    move or resize individual windows, hold the Alt (meta) key and use the left
+    and middle mouse buttons, respectively.  Most of these can be anywhere on
+    the command line.  Also, if you use {\tt -b} without any other arguments,
+    \map{} will allow you to select the files interactively and add them to
+    this master window.
+    
+    
+  \item [{\tt -v}] = show current version of the program.  If this is
+    the only argument, the program will exit.
+    
+%  \item[{\tt -vm}] = run program in video mode. This thickens lines,
+%        and sets a reduced range of colours, for the purpose of making
+%        videos from graphics output. 
+%        This also initializes the video equipment in VISSGI\@. 
+        
+  \item[{\tt -nw}] = for multiple surfaces ({\em i.e.,} more than one
+    set of points and triangles), place each surface data in a new
+    window. By default, \map{} opens a single window for all
+    surfaces.
+    
+  \item[{\tt -slw 0}] = do not show any legend windows at startup.
+
+  \item[{\tt -fs interval}] = Sets the run-time interval between frames
+    as accessed by the arrow keys.  Note that this is independent of the 
+    {\tt -i} option below, which subsamples the data as it is being read in.
+    This feature can be changed via the menus at runtime.
+    
+  \item[{\tt -fl}] = Allows keyboard navigation of frames to to loop,
+    that is, to cycle from the end to the beginning of the dataset and 
+    vice versa.
+    This feature can be changed via the menus at runtime.
+    
+  \item[{\tt -nv}] = to NOT check validity of geometry files.  This can
+    have a large impact on startup performance if \map{} needs to
+    load large geometries.
+    
+  \item [{\tt -c colour}] = colour value to use on all
+    surfaces for which there is no specific colour specification.  
+    This option must be set before any surfaces are read, since the 
+    same option sets the colors for individual surfaces.  See the 
+    mesh-specific {\tt -c colour} below for colour examples. 
+    
+  \item [{\tt -bg colour}] = colour value to use as background of all
+    windows for which there is no specific colour specification.  
+    This option must be set before any surfaces are read, since the 
+    same option sets the colors for individual windows.
+    
+  \item [{\tt -fg colour}] = colour value to use as text colour for all
+    windows for which there is no specific colour specification.  
+    This option must be set before any surfaces are read, since the 
+    same option sets the colors for individual windows.
+    
+%  \item [{\tt -df filename}] = read the defaults file {\tt filename} for
+%        start-up settings for the program.  This overrides any defaults
+%        files read by the program (see below) or any defaults set within
+%        the program. 
+
+  \item [{\tt -if basefilename}] = base filename for any image files that
+        are generated in this run of the program.
+
+  \item[{\tt -dp datafile\_pathname}] = directs the search for data files
+        accessed to another directory.  Using an alternate pathname, 
+        you can override the
+        original directory specification for the files and get them from,
+        say, an optical disk.  This value can also be set with an
+        environmental variable called {\tt MAP3D\_DATAPATH}, which you can
+        set at any time before executing \map{}.  With this option, \map{}
+        looks in {\tt datapath/filename}.
+
+%        This value can also be specified in the
+%        defaults file (see section~\ref{sec:defaults}) 
+
+%  \item[{\tt -gp geomfile\_pathname}] = directs the search for geometry files
+%        accessed via a .tsdf file to another directory.  The most common
+%        case of this is when the name of the geometry file is stored in the
+%        data file, usually without directory specification. This value can
+%        also be specified in the
+%        defaults file (see section~\ref{sec:defaults}) or via an
+%        environmental variable called {\tt MAP3D\_GEOMPATH}, which you can
+%        set at any time before executing \map{}.  You may specify this
+%        option either globally for all surfaces by inserting is before the
+%        first {\tt -f filename} in the command line, or separately for each
+%        surface. 
+
+      \item[{\tt -bgi image\_filename}] = An image file (in jpg or png) to
+        display in the background.  Used in conjunction with -bgp.
+      \item[{\tt -bgi x1 y1 z1 x2 y2 z2}] = Coordinates in world space to display
+        the image specified with -bgp.  If unspecified, the image will fill the
+        geometry window.
+      \item[{\tt -ss}] = Sets the scale to be the same between all windows.
+        Typically \map{} will position each window such that its geometries
+        fill up the window, but this will enforce that all positioning is
+        done the same.
+      \item[{\tt -sr}] = Sets the amount of time (sample rate) between
+        frames, for display purposes in the time series window.  This is on
+        a time-unit basis; e.g., if the time unit is ns, and the sample
+        rate is 3, the time series window will show that 3 ns passes with
+        every frame advance.  Works in conjunction with the \emph{-tu}
+        option.
+      \item[{\tt -tu}] = Sets the time unit to display in the time series
+        window.  Works in conjunction with the \emph{-sr} option.
+      \item[{\tt -ss}] = Sets the scale to be the same between all windows.
+        Typically \map{} will position each window such that its geometries
+        fill up the window, but this will enforce that all positioning is
+        done the same.
+%  \item [{\tt -rl report\_level}] = set the report level for this execution
+%        of \map{}.  The legal values are 0 (no reporting) to 4 (full
+%        debug-level reporting).  
+%       This values overrides the one set in the
+%        default file, bit should be specified after the default file if the
+%        {\tt -df} option is used.
+
+%  \item [{\tt -vw xmin ymin}] = Set the lower left hand corner of the video
+%        window to a particular spot on the screen.  Units are in screen
+%        coordinates, same as for the {\tt -as} and {\tt -ts} commands
+%        described below.
+
+\end{description}
+        
+\subsection{Geometry specifications}
+\label{sec:usage-geometry} 
+
+
+The basis for display in \map{} is one or more geometry descriptions,
+which are usually in the form of surfaces, but can also be a set of line
+segments or tetrahedra; hence we can picture each set of nodes and
+connectivities as a ``meta-surface'', which we generally refer to as a
+``surface''.  For each such surface, \map{} needs the set of node locations
+in three-dimensional space and usually some connectivity information that
+defines the (meta) surface.  The geometries must exist in discrete form and
+be stored in files that \map{} can read (see Section~\ref{sec:geomfiles} for
+details of the file formats).  There is no provision at present for
+analytically defined geometries.
+
+To tell \map{} where to look for this geometry information, 
+each occurrence of \texttt{-f} in the command line indicates that 
+beginning of a new surface.  All parameters (except for global options)
+that follow before the 
+next occurrence of \texttt{-f} refer to the current surface.
+%
+\begin{description}
+  \item[{\tt -f geometry-file} ]
+                                %  or {\tt datafile.tsdf}]
+    = filename of the geometry file(s) containing points and
+    connectivity information.   Legal formats for the file specification 
+    are: 
+    \begin{enumerate}
+      \item nodes (.pts) file will read and display only the 
+        nodes from the geometry; no display of the potentials is 
+        possible with just this information;
+        
+      \item triangles/tetrahedra (.fac/.tetra) file will read 
+        \textbf{both} the connectivities and the nodes (provided
+        both exist and share the same root filename);
+        
+      \item binary matlab geometry (.mat) file contains both nodes and 
+        connectivity information and may also contain channel
+        mapping.  At present, multi-surface geometry files must
+	include a specific indication of the desired surface
+	(\texttt{@surfnum}); otherwise, \map{} reads all surfaces
+	in the file.
+    \end{enumerate}
+    Note: by specifying a root filename without any extension, \map{} will
+    look for all valid geometry files and try and construct the most
+    comprehensive set.  (It will do the same for data files as well.)
+    Where there are multiple, potentially
+    conflicting files with the same root, \eg{} \texttt{file.pts} and
+    \texttt{file.geom}, \map{} will select binary over text files.  
+    See Section \ref{sec:readgeom} for more details on the rules for
+    specifying and reading geometry files.  
+    
+  \item[{\tt-w}] = place this and subsequent surfaces in a new window.
+    This option will do nothing if the \texttt{-nw} option is set or if
+    this is the first surface
+    
+  %    \item[{\tt -ac}] = do not shift the origin of the points to the centroid
+  %    of the pointset but leave values as they are in the input geometry
+  %    files. 
+    
+  \item[{\tt-fg colour}]
+    = desired colour for the screen information of a particular 
+    window, if this will be   
+    specified as a red, green, and blue value triplet ranging from 
+    0 to 255.  Some examples are:\\
+                                % 
+    \begin{center}
+        \begin{tabular}{|l|l|} \hline
+            255 0 0     & red \\
+            0 255 0     & green\\
+            0 0 255     & blue\\
+            255 255 0   & yellow\\
+            255 0 255   & magenta  \\
+            0 255 255   & cyan \\
+            255 255 255 & white  \\ \hline
+        \end{tabular}
+    \end{center}
+    
+  \item[{\tt-bg colour}]
+    = desired colour for the background of a particular window,
+    specified as a red, green, and blue value triplet.  
+    See the {\tt-fg option} for examples.
+    
+  \item[{\tt-c colour}]
+    = desired colour for the mesh of a particular surface,
+    specified as a red, green, and blue value triplet.  
+    See the {\tt-fg option} for examples.
+    
+    
+  \item[{\tt-as xmin xmax ymin ymax}] = set the absolute location in
+    pixels of the surface window most recently defined.  We
+    assume an origin in the lower left corner of the screen and
+    the typical full screen of an SGI workstation with a 19-inch
+    monitor has 1280 by 1024 pixels.  This option is useful for
+    setting consistent layout of windows, especially when
+    there are multiple surfaces, each in its own window.
+    
+  \item[{\tt-al xmin xmax ymin ymax}] = set the absolute location in 
+    pixels of the surface window most recently defined's colormap
+    legend window.  There will be one of these windows per
+    surface only if a valid data file is associated with it.
+    
+  \item[{\tt -slw 0}] = do not show the legend window for this surface.
+
+  \item[{\tt -lh }] = Set the most recently defined surface's colormap
+        legend window to have a horizontal instead of vertical layout.
+
+  \item[{\tt -lm landmark\_filename }] = read from the file {\tt
+      landmark\_filename} a set of coronary arteries, or any other
+    landmark information stored as a series of points, with a radius
+    associated with each.  See section~\ref{sec:lmfile} below for
+    details.
+    
+  \item[{\tt -ll leadlinks-filename}] = file in {\em
+      leadlinks\/} format containing a list of the node locations
+    that correspond to a subset of the leads, \eg{} the lead
+    locations on the torso surface that correspond to the standard
+    ECG leads.  The point of identifying such leads is to display
+    them with their own markings, either as spheres or with the
+    lead number (typically not the same as the node number).  For
+    more information, 
+%        see the {\tt l} key-command in
+%       Section~\ref{sec:control-keys}, which toggles the display of the
+%       leads in the leadlink file and 
+    see the menu options in
+    Section~\ref{sec:control-menus} that determine the form of the display
+    markings and Section \ref{sec:leadfiles} for more information on 
+    leadlinks files.
+    
+%  \item[{\tt-cg colour}] = desired colour for the vectors in any grad
+%        files read for this surface.  This is meaningful when the
+%        amplitudes of the vectors have no intrinsic meaning (\eg{}
+%        fiber-orientation vectors). \\ 
+%        %      
+%       \begin{tabular}{ll}
+%          1 = red    & 4 = cyan\\
+%          2 = green  & 5 = magenta  \\
+%          3 = blue   & 6 = yellow \\
+%          7 = white  &
+%       \end{tabular}
+
+%  \item[{\tt -ds }] = make this surface the dominant surface in a
+%        master/slave relationship used in the program for moving surfaces
+%        independently of one another.
+
+%  \item[{\tt -dp datafile\_pathname}] = same as above but for this surface
+%        only. 
+
+%  \item[{\tt -gp geomfile\_pathname}] = same as above but for this surface
+%        only. 
+
+
+\end{description}
+
+\subsection{Scalar Data parameters}
+\label{sec:scalarparams} 
+
+To display scalar data values on the geometry, we must specify the source 
+of the data and how to link them to the geometry.  As with the 
+geometry, all arguments specified between two occurrences of \texttt{-f} 
+in the command line refer to the currently valid surface.  Within pairs of
+\texttt{-f} options, there can be only a single instance of any of the
+following options:
+%
+\begin{description}
+    
+  \item[{\tt-p potfilename}] = filename for the potential and
+    current data files.  The legal file types for scalar data are:
+    \begin{enumerate}
+      \item Pot files (.pot) (see Section~\ref{sec:potfiles} are 
+        text-based files which contain one file per time instance.
+        
+      \item matlab files (.mat) are also stored in binary format.  
+        Matlab files can also contain multiple time series. 
+        
+    \end{enumerate}
+    
+    The \texttt{-s} option determines how many frames to load. 
+    In the case of pot files, this controls which pot files to open 
+    (If \texttt{-s} is omitted, it will only open the pot file specified). 
+    For binary files, the \texttt{-s} option specifies the start
+    and end frame numbers to be read from the file.  With no
+    \texttt{-s} option, \map{} will read in all time instants from
+    the file.  Note also that if you omit the extension, as with
+    geometry files, it will try to match a .pot or .mat
+    extension for you. \\
+
+    For files with multiple time series (matlab or tsdf containers),
+    you may specify the time series by the command line with the ``@'' 
+    suffix appended to the filename followed by the time series index 
+    within the file. \\
+
+    {\em eg.,} \hspace{.2in}{\tt -p file.mat@1} reads the first time
+    series and 
+    {\em eg.,} \hspace{.2in}{\tt -p file.tsdfc@2} reads the second time
+    series.
+    
+  \item[{\tt -s num1 num2}] = range of frame numbers to read.  If we are
+    reading data from .pot or .grad files, \map{} appends each of the
+    numbers between \texttt{num1} and \texttt{num2} 
+    to the value of {\tt potfilename} to make complete pot filenames.
+    However, you must run \map{} with the full pot filename (one of the 
+    pot files in the series). \\ 
+    {\em eg.,} \hspace{.2in}{\tt -p good-map001.pot -s 1 3}\hspace{.2in}
+    expands to:\\
+    \mbox{\hspace{1in}}
+    {\tt good-map001.pot good-map002.pot good-map003.pot}\\
+    If we are reading from a matlab (.mat) data file, \map{} will
+    read frames {\tt num1} to {\tt num2} from the file.
+    
+  \item[{\tt-i increment}] = difference between each frame number.
+    With the last few versions, this would still read in all the frames, but
+    this version acts more like the versions prior to that, and subsamples
+    the data.  
+    
+  \item[{\tt-ph maxpotval}] = maximum data value in ``user'' scaling
+    mode.  This sets one option for setting the range used in 
+    scaling the data value to colours and contours.  You can select other
+    ranges from the menu and can select this one again with
+    Scaling->Range->Command-line specified range. 
+    
+  \item[{\tt-pl minpotval}]
+    = minimum data value in ``user'' scaling mode. 
+    
+  \item[{\tt-cs contour-spacing}] = spacing between contours set by the
+    user.  This provides a menu option for selecting contours by setting a
+    constant spacing rather than deriving the spacing from the desired
+    number of contours and the range of data values.  Note that the spacing
+    will not always be a the command-line set value - \map{} will divide
+    the range by the specified value and set the number of contours as that
+    number, and then determine the contour values by using that number of
+    contours with the currently- selected scaling function.  You can select
+    other numbers of contours from the menu and can select this again with
+    Contours->Number of Contours->Command-line spacing
+    
+  \item[{\tt-ps scaleval}] = scaling value by which \map{} multiplies each
+    potential value as it reads from the file(s).  This option tries to
+    make use of any unit information available in a time series data file
+    and alters the unit value available to \map{} for display.  The
+    resulting scaling of the data is permanent for the current instance of
+    \map{}.
+        
+  \item[{\tt -ch channels-filename}] = file in {\em channels\/} format
+    containing an entry for each node in the geometry which points to the
+    associated location in the data array.  The value of this pointer is
+    also the number that is written next to node locations when channel
+    numbers are displayed.  See section~\ref{sec:leadfiles} for more
+    information on the channels file format.
+        
+  \item[{\tt -lm landmarks-filename}] = file in {\em landmarks\/} format
+    containing a set of landmark segments, divided into categories.  Each
+    category has a word depicting the landmark type.  Each lines within the
+    categories contains three points (x,y,z) and an associated radius,
+    which may have a different effect based on the type of landmark.
+    See section~\ref{sec:landmarkgeom}.
+
+%    \item[{\tt -ch channel-links-filename}] = file in {\em channel links\/}
+%          format containing an entry for each node in the geometry which
+%          points to the associated location in the data array and to the
+%          string array for display at that node.  See
+%          section~\ref{sec:leadfiles} for more information on the 
+%          channel links file format.
+  
+  \item[{\tt-ff fidfile}] = Ascii file containing fiducial information.
+  Information may be specified for each node for an arbitrary set of 
+  fiducial data.  See section~\ref{sec:fidfiles}.
+      
+  \item[{\tt-sl surfnum}] = surface number to which the scaling for this
+    surface is to be slaved.  The idea here is to have surfaces locked in
+    the way they scale and display the data; in this way, one can compare
+    colors across surfaces to determine relative values of the local scalar
+    data.
+    
+  \item[{\tt -t timesignal-lead-number}] = number of the node to be used
+    for the display of a time signal in its own window.  The number refers
+    to either a node number in the geometry or, if a leadlinks file is
+    present, the \emph{lead} number.  This command is optionally used in
+    conjunction with the -at command, to specify a node and place its
+    window accordingly.  If the -at option is not present, map3d will
+    choose a default window location.  Multiple invocations of this option
+    are possible for each surface, providing the option to open several
+    windows per surface.  At any time during the operation of the \map{}
+    the user can select a new node via the pick mode menu item and have the
+    time signal from that node displayed (see
+    Section~\ref{sec:control-picking} for details).
+    
+  \item[{\tt-at xmin xmax ymin ymax}] = set the absolute location in pixels
+    of a time signal window associated with the current surface.  As with
+    the \texttt{-as} option, the origin is in the lower left corner of the
+    screen and the full screen resolution of an SGI screen with 19-inch
+    monitor typically supports 1280 by 1024 pixels.  This command is
+    optionally used in conjunction with the -t command, to specify a node
+    and place its window accordingly.  If the -t option is not present,
+    map3d will choose a default node (the first node in the geometry).
+    Multiple invocations of this option are possible for each surface,
+    providing the option to open several windows per surface.
+        
+\end{description}
+
+\subsection{Other usage parameters}
+\map{} accepts many other command-line parameters to customize the display.
+These are optimally used in a script, but the following sections showcase
+some of the options not described above.  Some of these options will
+only be pertinent when used from a script file (see Section~\ref{sec:scripts}).
+
+\subsubsection{Additional global parameters}
+These parameters affect all surfaces or windows in \map{}.
+
+\begin{description}
+  \item[{\tt-bw borderWidth titleHeight}] Specifies the border width and the 
+    height of the title bar in pixels used in window placement calculations.
+    
+  \item[{-l general transformation frame}] Specifies whether the general, 
+    transformation, and frame locks should be turned on.  Specify a 1 or
+    a 0 for each, where 1 signifies to enable the lock, and 0 to disable.
+
+  \item[{-pm mode}] Specifies the pick mode, where mode is an integer.
+    \begin{verbatim}
+    0  New Window Mode
+    1  Refresh Window Mode
+    2  Node Info Mode
+    3  Triangle Info Mode
+    4  Triangulate Mode
+    5  Flip Triangle Mode
+    6  Edit Node Mode
+    7  Edit Landmark Mode
+    8  Delete Node Mode
+    \end{verbatim}
+    
+  \item[{-sc range function mapping}]  Describes the scaling model, with the specified 
+    scaling range, function, and mapping, each being an integer.
+    \begin{verbatim}
+    Range (data min and max is relative to):
+    0  Local
+    1  All frames in current surface
+    2  All surfaces in current frame
+    3  All surfaces and frames
+    4  All surfaces in current group in current frame
+    5  All surfaces and frames in current group
+    6  Slave scaling in current frame
+    7  Scave scaling in all frames
+    
+    Function
+    0  Linear
+    1  Exponential
+    2  Logarithmic
+    3  Lab7
+    4  Lab13
+    
+    Mapping
+    0  Symmetric
+    1  Separate
+    2  True
+    3  About Midpoint
+    \end{verbatim}
+  \end{description}
+  
+\subsubsection{Additional surface parameters}
+These options affect the current surface, if placed after the first [{-f}] on the command
+line, or all surfaces if placed before.
+\begin{description}
+  \item [{-sf size}]  Size of the small font, from 0-9
+  \item [{-mf size}]  Size of the medium font, from 0-9
+  \item [{-lf size}]  Size of the large font, from 0-9
+  \item [{-cm map}]   Which colormap the data will use, where map is an integer:
+  \begin{verbatim}
+  0  Rainbow
+  1  Green to Red
+  2  Grayscale
+  3  Jet
+  \end{verbatim}
+  \item [{-sm mode}] Selects the shading mode of surface data, where mode is an integer:
+  \begin{verbatim}
+  0  No shading
+  1  Flat
+  2  Gouraud
+  3  Banded
+  4  Textured Gouraud
+  \end{verbatim}
+  \item [{-rm mode}] Selects the mesh rendering mode, mode being an integer:
+  \begin{verbatim}
+  0  No rendering (mesh is not displayed)
+  1  Points Only
+  2  Mesh Elements
+  3  Mesh Connectivity
+  4  Elements and Connectivity
+  5  Points and Connectivity
+  6  Render only the mesh elements with no surface data
+  \end{verbatim}
+  \item[{-ic num}] Whether or not to invert the colormap, 1 meaning yes, 0 meaning no
+  \item[{-nco num}] Sets the number of contours to num
+  \item[{-rq w x y z}] Sets the rotation of the surface to the quaternion formed by (w,x,y,z)
+  \item[{-tc x y z}] Sets the translation of the surface to (x,y,z)
+  \item[{-zf vfov}] Sets the ``zoom factor'' or field of view to vfov
+  \item[{-el num}] Whether or not to light the surface, 1 meaning yes, 0 meaning no
+  \item[{-ef num}] Whether or not to display the surface with fog, 1 meaning yes, 0 meaning no
+  \item[{-gn num}] Assigns the group number to num for group scaling
+  \item[{-sco num}] Whether or not to show contours, 1 meaning yes, 0 meaning no
+  \item[{-nc num}] Whether or not to show the negative contours as dashes, 1 meaning yes, 0 meaning no
+  \item[{-x num}] Whether or not to show axes, 1 meaning yes, 0 meaning no
+  \item[{-xc r g b}] Specifies the axes' color, with RGB numbers from 0-255
+  \item[{-sit num}] Whether or not to show informational text, 1 meaning yes, 0 meaning no
+  \item[{-sli num}] Whether or not to show the lock icons, 1 meaning yes, 0 meaning no
+  \item[{-nma sphere mark value}] Settings for Node Marking: all.  
+    Sphere indicates whether to draw spheres for all nodes, 1 meaning yes, 0 meaning no.
+    Value indicates whether to color the spheres based on their data value, 1 meaning yes, 0 meaning no.
+    Mark indicates what to display at the nodes, mark being an integer:
+    \begin{verbatim}
+    0  nothing
+    1  Node number
+    2  Channel number
+    3  Data value
+    \end{verbatim}
+  \item[{-nme sphere mark}] Settings for Node Marking: extrema, where sphere and mark 
+  have the same meanings as [{-nma}], except the affect the extrema nodes
+  \item[{-nmp sphere mark}] Settings for Node Marking: pick, where sphere and mark 
+  have the same meanings as [{-nma}], except the affect only the nodes that have an active ``Time Series''
+  Window open.
+  \item[{-nml sphere mark}] Settings for Node Marking: leadlinks, where sphere and mark 
+  have the same meanings as [{-nma}], except the affect only the nodes that are
+  represented in the active leadlinks file, except that a mark of 3 will display the lead label
+  instead of the data value.
+  \item[{-Sll value}] Sets the size of the leadlinks points, from 0-9.
+  \item[{-Cll r g b}] Sets the color of the leadlinks points, with RGB numbers from 0-255
+  \item[{-rf num}] Whether or not to draw fiducials, 1 meaning yes, 0 meaning no.  
+  
+  
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "manual"
+%%% End: 

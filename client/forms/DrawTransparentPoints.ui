@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DrawTransparentPoints</class>
+ <widget class="QDialog" name="DrawTransparentPoints">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1075</width>
+    <height>287</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Show Surface</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="headerFrame">
+     <property name="styleSheet">
+      <string notr="true">#surfHeaderLabel, #TransparencyLabel,#ActivationmapLabel, #DrawPointsLabel #DrawDatacloudLabel,#DrawForwardLabel, #MFSinverseLabel{
+}
+
+#surfHeaderLabel {
+padding: 4px;
+border: 1px solid black;
+border-left-width: 1px;
+}
+
+#DrawPointsLabel {
+padding: 4px;
+border: 1px solid black;
+border-left-width: 0px;
+}
+
+#TransparencyLabel{
+padding: 4px;
+border: 1px solid black;
+border-left-width: 0px;
+}
+
+#ActivationmapLabel{
+padding: 4px;
+border: 1px solid black;
+
+}
+
+#DrawDatacloudLabel{
+padding: 4px;
+border: 1px solid black;
+
+}
+
+#DrawForwardLabel{
+padding: 4px;
+border: 1px solid black;
+
+}
+
+#MFSinverseLabel{
+padding: 4px;
+border: 1px solid black;
+border-right-width: 1px solid black;
+}
+
+#InDeQuestion{
+padding: 4px;
+border: 1px solid black;
+border-right-width: 1px solid black;
+}
+
+#InflateDeflate{
+padding: 4px;
+border: 1px solid black;
+border-right-width: 1px solid black;
+}
+
+#RecalMFS{
+padding: 4px;
+border: 1px solid black;
+border-right-width: 1px solid black;
+}
+
+#phasemaplabel{
+padding: 4px;
+border: 1px solid black;
+border-right-width: 1px solid black;
+}
+
+
+
+
+</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="3" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <widget class="QLabel" name="ActivationmapLabel">
+        <property name="text">
+         <string>Global Validation Map</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="DrawDatacloudLabel">
+        <property name="text">
+         <string>Draw Datacloud </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="surfHeaderLabel">
+        <property name="styleSheet">
+         <string notr="true">border-left-color: rgb(0, 0, 0);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string>Surface #</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="MFSinverseLabel">
+        <property name="text">
+         <string>MFS inverse</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="DrawPointsLabel">
+        <property name="styleSheet">
+         <string notr="true">border-color: rgb(0, 0, 0);
+border-right-color: rgb(0, 0, 0);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string>Only Draw Points?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="TransparencyLabel">
+        <property name="styleSheet">
+         <string notr="true">border-right-color: rgb(0, 0, 0);</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string>Transparency?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="DrawForwardLabel">
+        <property name="text">
+         <string>Draw Forward</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="9">
+       <widget class="QLabel" name="InflateDeflate">
+        <property name="text">
+         <string>In/Deflate </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="8">
+       <widget class="QLabel" name="InDeQuestion">
+        <property name="text">
+         <string>Change size?</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="10">
+       <widget class="QLabel" name="RecalMFS">
+        <property name="text">
+         <string>Recal MFS</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
+       <widget class="QLabel" name="phasemaplabel">
+        <property name="text">
+         <string>Phase map</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="applyButton">
+        <property name="text">
+         <string>Apply</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cancelButton">
+        <property name="text">
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
